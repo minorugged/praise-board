@@ -468,7 +468,7 @@ async function sendCompliment(){
   try{
     const res=await fetch(CONFIG.SEND_URL,{
       method:'POST',
-      headers:{'Content-Type':'application/json'},
+      headers: { 'Content-Type': 'text/plain' },
       body:JSON.stringify({
         to:      selectedPerson.mail,
         toName:  selectedPerson.name,
@@ -502,7 +502,7 @@ async function loadReceived(){
   document.getElementById('received-loading').style.display='block';
   document.getElementById('received-list').innerHTML='';
   try{
-    const res=await fetch(CONFIG.READ_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({userEmail:myEmail})});
+    const res=await fetch(CONFIG.READ_URL,{method:'POST',headers: { 'Content-Type': 'text/plain' },body:JSON.stringify({userEmail:myEmail})});
     const data=await res.json();
     renderReceived(Array.isArray(data)?data:[]);
   }catch(e){
