@@ -223,7 +223,6 @@ const MEMBERS=[
 
 async function sbFetch(path,options={}){
   const h={'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Content-Type':'application/json',...(options.headers||{})};
-  if(options.method==='POST') h['Prefer']='return=minimal';
   return fetch(SUPABASE_URL+path,{...options,headers:h});
 }
 
