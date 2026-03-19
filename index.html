@@ -4,89 +4,53 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>匿名で褒め合おう〜1年間お疲れ様でした〜</title>
-<script src="https://res.cdn.office.net/teams-js/2.22.0/js/MicrosoftTeams.min.js"></script>
-<script src="https://alcdn.msauth.net/browser/2.38.0/js/msal-browser.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Noto Sans JP',sans-serif;background:#FBF8F3;color:#1C1612;min-height:100vh;}
 .app{max-width:480px;margin:0 auto;display:flex;flex-direction:column;min-height:100vh;}
-
-/* Header */
 .header{padding:18px 20px 0;display:flex;flex-direction:column;gap:2px;}
 .header-title{font-family:'DM Serif Display',serif;font-size:18px;color:#1C1612;letter-spacing:-0.3px;line-height:1.4;}
 .header-sub{font-size:10px;color:#A09890;letter-spacing:0.8px;}
-
-/* Tabs */
 .tabs{display:flex;padding:14px 20px 0;gap:4px;border-bottom:1px solid rgba(28,22,18,0.1);}
 .tab{padding:7px 13px;font-size:12px;font-weight:500;color:#A09890;cursor:pointer;border-radius:8px 8px 0 0;border:none;background:none;font-family:'Noto Sans JP',sans-serif;transition:all 0.18s;position:relative;top:1px;}
 .tab.active{color:#D4622A;background:#fff;border:1px solid rgba(28,22,18,0.1);border-bottom:1px solid #fff;}
 .tab:not(.active):hover{color:#5C5248;background:rgba(0,0,0,0.03);}
-
-/* Content */
 .content{flex:1;background:#fff;border:1px solid rgba(28,22,18,0.1);border-top:none;padding:18px 20px;}
-
 .section-label{font-size:10px;font-weight:700;color:#A09890;letter-spacing:1px;text-transform:uppercase;margin-bottom:7px;}
-
-/* Word Cloud */
-.wordcloud-wrap{
-  background:#FBF8F3;border-radius:12px;padding:14px 16px;margin-bottom:16px;
-  min-height:90px;position:relative;overflow:hidden;
-}
-.wordcloud-title{font-size:10px;font-weight:700;color:#A09890;letter-spacing:0.8px;margin-bottom:10px;}
+.wordcloud-wrap{background:#FBF8F3;border-radius:12px;padding:14px 16px;margin-bottom:16px;min-height:90px;}
 .wordcloud-canvas{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;justify-content:center;min-height:60px;}
-.wc-word{
-  display:inline-block;cursor:default;transition:transform 0.2s;
-  font-family:'Noto Sans JP',sans-serif;font-weight:500;color:#5C5248;
-  animation:wcFade 0.4s ease both;
-}
+.wc-word{display:inline-block;cursor:default;transition:transform 0.2s;font-family:'Noto Sans JP',sans-serif;font-weight:500;animation:wcFade 0.4s ease both;}
 .wc-word:hover{transform:scale(1.12);}
 @keyframes wcFade{from{opacity:0;transform:scale(0.85);}to{opacity:1;transform:scale(1);}}
-
-/* People Picker */
-.people-picker{border:1px solid rgba(28,22,18,0.1);border-radius:10px;padding:9px 12px;background:#FBF8F3;width:100%;display:flex;align-items:center;gap:10px;cursor:pointer;transition:border-color 0.15s;margin-bottom:14px;position:relative;}
+.people-picker{border:1px solid rgba(28,22,18,0.1);border-radius:10px;padding:9px 12px;background:#FBF8F3;width:100%;display:flex;align-items:center;gap:10px;transition:border-color 0.15s;margin-bottom:14px;position:relative;}
 .people-picker:hover{border-color:rgba(28,22,18,0.25);}
 .avatar-sm{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;}
-
 .search-input{width:100%;border:none;background:transparent;font-size:13px;font-family:'Noto Sans JP',sans-serif;color:#1C1612;outline:none;}
 .search-input::placeholder{color:#A09890;}
-
 .people-dropdown{position:absolute;top:calc(100% + 4px);left:0;right:0;background:#fff;border:1px solid rgba(28,22,18,0.1);border-radius:10px;box-shadow:0 4px 16px rgba(28,22,18,0.1);overflow:hidden;z-index:20;max-height:220px;overflow-y:auto;}
 .people-item{display:flex;align-items:center;gap:10px;padding:9px 12px;cursor:pointer;transition:background 0.12s;}
 .people-item:hover{background:#FBF8F3;}
 .people-item-name{font-size:13px;font-weight:500;}
 .people-item-dept{font-size:10px;color:#A09890;}
 .dept-badge{font-size:9px;padding:1px 6px;border-radius:20px;margin-left:auto;white-space:nowrap;}
-
-/* Message */
 .msg-wrap{position:relative;margin-bottom:14px;}
 .msg-area{width:100%;min-height:90px;border:1px solid rgba(28,22,18,0.1);border-radius:10px;padding:11px 12px;font-size:14px;font-family:'Noto Sans JP',sans-serif;background:#FBF8F3;color:#1C1612;resize:none;transition:border-color 0.15s;line-height:1.7;}
 .msg-area:focus{outline:none;border-color:#D4622A;}
 .char-count{position:absolute;bottom:9px;right:11px;font-size:10px;color:#A09890;}
-
-/* Tags */
 .tags-row{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:14px;}
 .tag-chip{padding:4px 10px;border-radius:20px;font-size:11px;cursor:pointer;border:1px solid rgba(28,22,18,0.1);color:#5C5248;background:#FBF8F3;transition:all 0.15s;font-family:'Noto Sans JP',sans-serif;}
 .tag-chip:hover,.tag-chip.selected{background:#F5E8E0;border-color:#D4622A;color:#D4622A;}
-
-/* Send button */
 .btn-send{width:100%;padding:12px;background:#D4622A;color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:700;font-family:'Noto Sans JP',sans-serif;cursor:pointer;transition:all 0.18s;display:flex;align-items:center;justify-content:center;gap:6px;}
 .btn-send:hover{background:#C0551F;transform:translateY(-1px);}
 .btn-send:active{transform:translateY(0);}
 .btn-send:disabled{background:#A09890;cursor:not-allowed;transform:none;}
-
-/* Banners */
-.success-banner{background:#E0F0EC;border:1px solid rgba(42,122,106,0.2);border-radius:10px;padding:12px 16px;margin-bottom:14px;font-size:13px;color:#2A7A6A;font-weight:500;display:flex;align-items:center;gap:8px;}
-.error-banner{background:#FAECE7;border:1px solid rgba(153,60,29,0.2);border-radius:10px;padding:12px 16px;margin-bottom:14px;font-size:13px;color:#993C1D;display:flex;align-items:center;gap:8px;}
-.config-warning{background:#FAEEDA;border-radius:10px;padding:14px;margin-bottom:14px;font-size:12px;color:#633806;line-height:1.7;}
-
-/* Received */
+.success-banner{background:#E0F0EC;border:1px solid rgba(42,122,106,0.2);border-radius:10px;padding:12px 16px;margin-bottom:14px;font-size:13px;color:#2A7A6A;font-weight:500;}
+.error-banner{background:#FAECE7;border:1px solid rgba(153,60,29,0.2);border-radius:10px;padding:12px 16px;margin-bottom:14px;font-size:13px;color:#993C1D;}
 .received-header{display:flex;align-items:center;gap:10px;margin-bottom:18px;}
 .my-avatar{width:38px;height:38px;border-radius:50%;background:#F5E8E0;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#D4622A;}
 .badge-count{margin-left:auto;background:#D4622A;color:#fff;font-size:11px;font-weight:700;padding:3px 8px;border-radius:20px;}
-.notif-hint{background:#E0F0EC;border-radius:10px;padding:11px 13px;margin-bottom:18px;font-size:12px;color:#2A7A6A;line-height:1.6;}
-
 .compliment-card{background:#FBF8F3;border-radius:12px;padding:13px 15px;margin-bottom:9px;border-left:3px solid #F5E8E0;transition:all 0.15s;}
 .compliment-card:hover{border-left-color:#D4622A;transform:translateX(2px);}
 .card-tag{display:inline-block;font-size:9px;font-weight:700;letter-spacing:0.5px;padding:2px 7px;border-radius:20px;margin-bottom:6px;}
@@ -98,27 +62,26 @@ body{font-family:'Noto Sans JP',sans-serif;background:#FBF8F3;color:#1C1612;min-
 .card-msg{font-size:13px;line-height:1.7;color:#5C5248;}
 .card-date{font-size:10px;color:#A09890;margin-top:7px;}
 .anon-badge{font-size:9px;color:#A09890;background:rgba(28,22,18,0.05);border-radius:4px;padding:1px 5px;margin-left:5px;}
-
-/* Feed */
 .feed-filter{display:flex;gap:5px;margin-bottom:14px;flex-wrap:wrap;}
 .filter-btn{padding:4px 11px;border-radius:20px;font-size:11px;cursor:pointer;border:1px solid rgba(28,22,18,0.1);background:none;color:#5C5248;font-family:'Noto Sans JP',sans-serif;transition:all 0.15s;}
 .filter-btn.active{background:#1C1612;color:#fff;border-color:#1C1612;}
-
 .feed-card{background:#FBF8F3;border-radius:12px;padding:13px 15px;margin-bottom:9px;transition:all 0.15s;}
 .feed-card:hover{box-shadow:0 2px 10px rgba(28,22,18,0.07);}
 .feed-to{display:flex;align-items:center;gap:8px;margin-bottom:7px;}
 .feed-avatar{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;}
 .feed-name{font-size:12px;font-weight:700;}
-.feed-dept{font-size:10px;color:#A09890;margin-left:3px;}
 .feed-msg{font-size:13px;line-height:1.7;color:#5C5248;}
 .feed-footer{display:flex;align-items:center;margin-top:7px;}
 .feed-anon{font-size:10px;color:#A09890;}
 .feed-time{font-size:10px;color:#A09890;margin-left:auto;}
-
 .loading{text-align:center;padding:36px;color:#A09890;font-size:13px;}
 .spinner{width:22px;height:22px;border:2px solid #F5E8E0;border-top-color:#D4622A;border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 10px;}
 @keyframes spin{to{transform:rotate(360deg);}}
 .empty-state{text-align:center;padding:36px 20px;color:#A09890;font-size:13px;line-height:1.8;}
+.email-form{background:#FBF8F3;border-radius:10px;padding:16px;margin-bottom:16px;}
+.email-form input{width:100%;border:1px solid rgba(28,22,18,0.1);border-radius:8px;padding:9px 12px;font-size:13px;font-family:'Noto Sans JP',sans-serif;background:#fff;color:#1C1612;outline:none;margin-bottom:8px;}
+.email-form input:focus{border-color:#D4622A;}
+.btn-sm{padding:8px 16px;background:#D4622A;color:#fff;border:none;border-radius:8px;font-size:12px;font-weight:700;font-family:'Noto Sans JP',sans-serif;cursor:pointer;}
 </style>
 </head>
 <body>
@@ -127,47 +90,29 @@ body{font-family:'Noto Sans JP',sans-serif;background:#FBF8F3;color:#1C1612;min-
     <div class="header-title">〜1年間お疲れ様でした〜<br>匿名で褒め合おう！</div>
     <div class="header-sub">ANONYMOUS · DAIKO DA BUREAU</div>
   </div>
-
   <div class="tabs">
     <button class="tab active" onclick="switchTab('send',this)">✦ 褒める</button>
     <button class="tab" onclick="switchTab('received',this)">もらった</button>
     <button class="tab" onclick="switchTab('feed',this)">みんなの声</button>
   </div>
 
-  <!-- ===== SEND ===== -->
   <div class="content" id="tab-send">
-    <div id="config-warn" class="config-warning" style="display:none">
-      <strong>⚙ 設定が必要です：</strong> index.html 内の CONFIG にある3つのURLに Power Automate の HTTP トリガー URL を貼り付けてください。
-    </div>
-    <div id="send-success" style="display:none"><div class="success-banner">✓ 匿名で送信しました。相手に Teams 通知が届きます。</div></div>
-    <div id="send-error" style="display:none"><div class="error-banner">⚠ 送信に失敗しました。URLの設定を確認してください。</div></div>
-
-    <!-- Word Cloud -->
+    <div id="send-success" style="display:none"><div class="success-banner">✓ 匿名で送信しました！</div></div>
+    <div id="send-error" style="display:none"><div class="error-banner">⚠ 送信に失敗しました。</div></div>
     <div class="section-label">みんなの声 ワードクラウド</div>
-    <div class="wordcloud-wrap">
-      <div class="wordcloud-canvas" id="wordcloud"></div>
-    </div>
-
-    <!-- People Picker -->
+    <div class="wordcloud-wrap"><div class="wordcloud-canvas" id="wordcloud"></div></div>
     <div class="section-label">宛先</div>
     <div class="people-picker" id="picker-wrap">
-      <svg width="15" height="15" viewBox="0 0 16 16" fill="none" style="flex-shrink:0;color:#A09890">
-        <circle cx="8" cy="5" r="3" stroke="currentColor" stroke-width="1.5"/>
-        <path d="M2 13c0-3 2-5 6-5s6 2 6 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-      </svg>
+      <svg width="15" height="15" viewBox="0 0 16 16" fill="none" style="flex-shrink:0;color:#A09890"><circle cx="8" cy="5" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M2 13c0-3 2-5 6-5s6 2 6 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
       <input class="search-input" id="search-input" placeholder="名前・部署で検索…" oninput="onSearch(this.value)" onfocus="showDropdown()" autocomplete="off">
       <div id="picker-selected-badge" style="display:none;align-items:center;gap:6px;position:absolute;left:36px;right:36px;pointer-events:none;">
         <div class="avatar-sm" id="badge-avatar"></div>
         <span id="badge-name" style="font-size:13px;font-weight:500;"></span>
         <span id="badge-dept" style="font-size:10px;color:#A09890;"></span>
       </div>
-      <div id="picker-clear" onclick="clearPerson()" style="display:none;margin-left:auto;width:18px;height:18px;border-radius:50%;background:rgba(28,22,18,0.1);display:none;align-items:center;justify-content:center;cursor:pointer;font-size:10px;color:#5C5248;flex-shrink:0;">✕</div>
-      <div class="people-dropdown" id="people-dropdown" style="display:none" onclick="event.stopPropagation()">
-        <div id="people-list"></div>
-      </div>
+      <div id="picker-clear" onclick="clearPerson()" style="display:none;margin-left:auto;width:18px;height:18px;border-radius:50%;background:rgba(28,22,18,0.1);align-items:center;justify-content:center;cursor:pointer;font-size:10px;color:#5C5248;flex-shrink:0;">✕</div>
+      <div class="people-dropdown" id="people-dropdown" style="display:none" onclick="event.stopPropagation()"><div id="people-list"></div></div>
     </div>
-
-    <!-- Category -->
     <div class="section-label">カテゴリ</div>
     <div class="tags-row">
       <div class="tag-chip" onclick="toggleTag(this,'チームワーク')">チームワーク</div>
@@ -176,21 +121,17 @@ body{font-family:'Noto Sans JP',sans-serif;background:#FBF8F3;color:#1C1612;min-
       <div class="tag-chip" onclick="toggleTag(this,'仕事の質')">仕事の質</div>
       <div class="tag-chip" onclick="toggleTag(this,'リーダーシップ')">リーダーシップ</div>
     </div>
-
-    <!-- Message -->
     <div class="section-label">メッセージ</div>
     <div class="msg-wrap">
       <textarea class="msg-area" id="msg-area" placeholder="相手への感謝や称賛を書いてください。送信者は匿名になります。" maxlength="200" oninput="updateCount()"></textarea>
       <span class="char-count" id="char-count">0 / 200</span>
     </div>
-
     <button class="btn-send" id="send-btn" onclick="sendCompliment()" disabled>
       <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M1 7l11-5-5 11-2-4-4-2z" stroke="white" stroke-width="1.5" stroke-linejoin="round"/></svg>
       匿名で送る
     </button>
   </div>
 
-  <!-- ===== RECEIVED ===== -->
   <div class="content" id="tab-received" style="display:none">
     <div class="received-header">
       <div class="my-avatar" id="my-avatar-char">あ</div>
@@ -200,12 +141,15 @@ body{font-family:'Noto Sans JP',sans-serif;background:#FBF8F3;color:#1C1612;min-
       </div>
       <div class="badge-count" id="received-count">0件</div>
     </div>
-    <div class="notif-hint">🔔 新しい褒めが届いた時、Teams の Bot 通知が届きます。</div>
-    <div id="received-loading" class="loading"><div class="spinner"></div>読み込み中…</div>
+    <div id="email-form-wrap" class="email-form">
+      <div style="font-size:12px;color:#5C5248;margin-bottom:8px;">あなたのメールアドレスを入力してください</div>
+      <input type="email" id="email-input" placeholder="minoru.ochi@daiko.co.jp">
+      <button class="btn-sm" onclick="submitEmail()">確認する</button>
+    </div>
+    <div id="received-loading" class="loading" style="display:none"><div class="spinner"></div>読み込み中…</div>
     <div id="received-list"></div>
   </div>
 
-  <!-- ===== FEED ===== -->
   <div class="content" id="tab-feed" style="display:none">
     <div class="feed-filter">
       <button class="filter-btn active" onclick="setFilter(this,'all')">すべて</button>
@@ -221,419 +165,195 @@ body{font-family:'Noto Sans JP',sans-serif;background:#FBF8F3;color:#1C1612;min-
 </div>
 
 <script>
-/* ============================================================
-   ★ CONFIG: Power Automate の URL をここに貼り付けてください
-   ============================================================ */
-const CONFIG = {
-  SEND_URL: 'https://default8851da1308644211935b92c8e262a1.4d.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/a68f6fe31bae46288583fa414f6604c6/triggers/manual/paths/invoke?api-version=1',
-  READ_URL: 'https://default8851da1308644211935b92c8e262a1.4d.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/24de01fccfa04f98936bf03505619e4e/triggers/manual/paths/invoke?api-version=1',
-  FEED_URL: 'https://default8851da1308644211935b92c8e262a1.4d.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/42470677e9d64847babb56a151e61b10/triggers/manual/paths/invoke?api-version=1',
-};
-/* ============================================================ */
+const SUPABASE_URL='https://ifynzpnhaklwvrgabvax.supabase.co';
+const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlmeW56cG5oYWtsd3ZyZ2FidmF4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM1NjM2MDEsImV4cCI6MjA4OTEzOTYwMX0.NTVsgrWFAZ67PY10O-gZe_2cUqDwR8f2ENykHFWQehc';
 
-/* ── Member list (大広DAA局 49名) ── */
-const DEPT_STYLE = {
-  '大広ＤＡ局':     { bg:'#EEEDFE', tc:'#534AB7', badge:'#534AB7' },
-  '大広ＤＡ局１ＡＧ': { bg:'#E0F0EC', tc:'#0F6E56', badge:'#0F6E56' },
-  '大広ＤＡ局２ＡＧ': { bg:'#FAECE7', tc:'#993C1D', badge:'#993C1D' },
-  '大広ＤＡ局ＣＤＧ': { bg:'#FAEEDA', tc:'#854F0B', badge:'#854F0B' },
-};
-
-const MEMBERS = [
-  {name:'中田 侑希',  dept:'大広ＤＡ局',     mail:'yu-nakata@daiko.co.jp'},
-  {name:'加藤 弘晃',  dept:'大広ＤＡ局',     mail:'h-kato@daiko.co.jp'},
-  {name:'長谷部 和希', dept:'大広ＤＡ局',     mail:'k-hasebe@daiko.co.jp'},
-  {name:'難波 寛明',  dept:'大広ＤＡ局',     mail:'hiroaki.nanba@daiko.co.jp'},
-  {name:'中山 有理',  dept:'大広ＤＡ局１ＡＧ', mail:'yuri.nakayama@daiko.co.jp'},
-  {name:'二瓶 公輔',  dept:'大広ＤＡ局１ＡＧ', mail:'k-nihei@daiko.co.jp'},
-  {name:'佐藤 大',   dept:'大広ＤＡ局１ＡＧ', mail:'dai.sato@daiko.co.jp'},
-  {name:'小林 太郎',  dept:'大広ＤＡ局１ＡＧ', mail:'taro.kobayashi@daiko.co.jp'},
-  {name:'小林 未侑',  dept:'大広ＤＡ局１ＡＧ', mail:'miyu.kobayashi@daiko.co.jp'},
-  {name:'村中 浩輝',  dept:'大広ＤＡ局１ＡＧ', mail:'koki.muranaka@daiko.co.jp'},
-  {name:'梅田 陸',   dept:'大広ＤＡ局１ＡＧ', mail:'riku.umeda@daiko.co.jp'},
-  {name:'熊谷 大志',  dept:'大広ＤＡ局１ＡＧ', mail:'hiroshi.kumagai@daiko.co.jp'},
-  {name:'牧島 泉',   dept:'大広ＤＡ局１ＡＧ', mail:'izumi.makishima@daiko.co.jp'},
-  {name:'荒川 由賀',  dept:'大広ＤＡ局１ＡＧ', mail:'yuka.arakawa@daiko.co.jp'},
-  {name:'讃岐 千怜',  dept:'大広ＤＡ局１ＡＧ', mail:'chisato.sanuki@daiko.co.jp'},
-  {name:'金子 拓磨',  dept:'大広ＤＡ局１ＡＧ', mail:'takuma.kaneko@daiko.co.jp'},
-  {name:'山﨑 浩史',  dept:'大広ＤＡ局２ＡＧ', mail:'hiroshi.yamasaki@daiko.co.jp'},
-  {name:'杉山 一仁',  dept:'大広ＤＡ局２ＡＧ', mail:'k-sugiyama@daiko.co.jp'},
-  {name:'松本 宏司',  dept:'大広ＤＡ局２ＡＧ', mail:'koji.matsumoto@daiko.co.jp'},
-  {name:'橋本 咲穂',  dept:'大広ＤＡ局２ＡＧ', mail:'saho.hashimoto@daiko.co.jp'},
-  {name:'渡部 瑛',   dept:'大広ＤＡ局２ＡＧ', mail:'akari.watanabe@daiko.co.jp'},
-  {name:'田中 将',   dept:'大広ＤＡ局２ＡＧ', mail:'sho.tanaka@daiko.co.jp'},
-  {name:'百瀬 太陽',  dept:'大広ＤＡ局２ＡＧ', mail:'taiyo.momose@daiko.co.jp'},
-  {name:'藤村 有紗',  dept:'大広ＤＡ局２ＡＧ', mail:'arisa.fujimura@daiko.co.jp'},
-  {name:'越智 稔',   dept:'大広ＤＡ局２ＡＧ', mail:'minoru.ochi@daiko.co.jp'},
-  {name:'上田 薫',   dept:'大広ＤＡ局ＣＤＧ', mail:'ka-ueda@daiko.co.jp'},
-  {name:'丸田 将吾',  dept:'大広ＤＡ局ＣＤＧ', mail:'s-maruta@daiko.co.jp'},
-  {name:'久保田 愛梨', dept:'大広ＤＡ局ＣＤＧ', mail:'e-kubota@daiko.co.jp'},
-  {name:'井坂 篤史',  dept:'大広ＤＡ局ＣＤＧ', mail:'a-isaka@daiko.co.jp'},
-  {name:'吉積 諒馬',  dept:'大広ＤＡ局ＣＤＧ', mail:'r-yoshizumi@daiko.co.jp'},
-  {name:'宮本 亮',   dept:'大広ＤＡ局ＣＤＧ', mail:'ry-miyamoto@daiko.co.jp'},
-  {name:'寅井 卓哉',  dept:'大広ＤＡ局ＣＤＧ', mail:'t-torai@daiko.co.jp'},
-  {name:'小林 まなみ', dept:'大広ＤＡ局ＣＤＧ', mail:'man-kobayashi@daiko.co.jp'},
-  {name:'尾崎 幸喜',  dept:'大広ＤＡ局ＣＤＧ', mail:'ko-ozaki@daiko.co.jp'},
-  {name:'山田 吉輝',  dept:'大広ＤＡ局ＣＤＧ', mail:'yosh-yamada@daiko.co.jp'},
-  {name:'岩谷 翔太',  dept:'大広ＤＡ局ＣＤＧ', mail:'s-iwatani@daiko.co.jp'},
-  {name:'島田 雄平',  dept:'大広ＤＡ局ＣＤＧ', mail:'y-shimada@daiko.co.jp'},
-  {name:'島野 冬威',  dept:'大広ＤＡ局ＣＤＧ', mail:'toi.shimano@daiko.co.jp'},
-  {name:'座馬 隆士',  dept:'大広ＤＡ局ＣＤＧ', mail:'t-zama@daiko.co.jp'},
-  {name:'松田 徹',   dept:'大広ＤＡ局ＣＤＧ', mail:'to-matsuda@daiko.co.jp'},
-  {name:'柳原 誠',   dept:'大広ＤＡ局ＣＤＧ', mail:'m-yanagihara@daiko.co.jp'},
-  {name:'森田 萌絵',  dept:'大広ＤＡ局ＣＤＧ', mail:'moe.morita@daiko.co.jp'},
-  {name:'椎木 優月',  dept:'大広ＤＡ局ＣＤＧ', mail:'y-shiinoki@daiko.co.jp'},
-  {name:'水口 由香',  dept:'大広ＤＡ局ＣＤＧ', mail:'yuka.minakuchi@daiko.co.jp'},
-  {name:'浦田 亮',   dept:'大広ＤＡ局ＣＤＧ', mail:'r-urata@daiko.co.jp'},
-  {name:'簾谷 唯衣',  dept:'大広ＤＡ局ＣＤＧ', mail:'y-misutani@daiko.co.jp'},
-  {name:'阿波野 駿',  dept:'大広ＤＡ局ＣＤＧ', mail:'s-awano@daiko.co.jp'},
-  {name:'高橋 朋花',  dept:'大広ＤＡ局ＣＤＧ', mail:'ho-takahashi@daiko.co.jp'},
-  {name:'高田 佳聖',  dept:'大広ＤＡ局ＣＤＧ', mail:'y-takata@daiko.co.jp'},
+const DEPT_STYLE={'大広ＤＡ局':{bg:'#EEEDFE',tc:'#534AB7',badge:'#534AB7'},'大広ＤＡ局１ＡＧ':{bg:'#E0F0EC',tc:'#0F6E56',badge:'#0F6E56'},'大広ＤＡ局２ＡＧ':{bg:'#FAECE7',tc:'#993C1D',badge:'#993C1D'},'大広ＤＡ局ＣＤＧ':{bg:'#FAEEDA',tc:'#854F0B',badge:'#854F0B'}};
+const MEMBERS=[
+  {name:'中田 侑希',dept:'大広ＤＡ局',mail:'yu-nakata@daiko.co.jp'},
+  {name:'加藤 弘晃',dept:'大広ＤＡ局',mail:'h-kato@daiko.co.jp'},
+  {name:'長谷部 和希',dept:'大広ＤＡ局',mail:'k-hasebe@daiko.co.jp'},
+  {name:'難波 寛明',dept:'大広ＤＡ局',mail:'hiroaki.nanba@daiko.co.jp'},
+  {name:'中山 有理',dept:'大広ＤＡ局１ＡＧ',mail:'yuri.nakayama@daiko.co.jp'},
+  {name:'二瓶 公輔',dept:'大広ＤＡ局１ＡＧ',mail:'k-nihei@daiko.co.jp'},
+  {name:'佐藤 大',dept:'大広ＤＡ局１ＡＧ',mail:'dai.sato@daiko.co.jp'},
+  {name:'小林 太郎',dept:'大広ＤＡ局１ＡＧ',mail:'taro.kobayashi@daiko.co.jp'},
+  {name:'小林 未侑',dept:'大広ＤＡ局１ＡＧ',mail:'miyu.kobayashi@daiko.co.jp'},
+  {name:'村中 浩輝',dept:'大広ＤＡ局１ＡＧ',mail:'koki.muranaka@daiko.co.jp'},
+  {name:'梅田 陸',dept:'大広ＤＡ局１ＡＧ',mail:'riku.umeda@daiko.co.jp'},
+  {name:'熊谷 大志',dept:'大広ＤＡ局１ＡＧ',mail:'hiroshi.kumagai@daiko.co.jp'},
+  {name:'牧島 泉',dept:'大広ＤＡ局１ＡＧ',mail:'izumi.makishima@daiko.co.jp'},
+  {name:'荒川 由賀',dept:'大広ＤＡ局１ＡＧ',mail:'yuka.arakawa@daiko.co.jp'},
+  {name:'讃岐 千怜',dept:'大広ＤＡ局１ＡＧ',mail:'chisato.sanuki@daiko.co.jp'},
+  {name:'金子 拓磨',dept:'大広ＤＡ局１ＡＧ',mail:'takuma.kaneko@daiko.co.jp'},
+  {name:'山﨑 浩史',dept:'大広ＤＡ局２ＡＧ',mail:'hiroshi.yamasaki@daiko.co.jp'},
+  {name:'杉山 一仁',dept:'大広ＤＡ局２ＡＧ',mail:'k-sugiyama@daiko.co.jp'},
+  {name:'松本 宏司',dept:'大広ＤＡ局２ＡＧ',mail:'koji.matsumoto@daiko.co.jp'},
+  {name:'橋本 咲穂',dept:'大広ＤＡ局２ＡＧ',mail:'saho.hashimoto@daiko.co.jp'},
+  {name:'渡部 瑛',dept:'大広ＤＡ局２ＡＧ',mail:'akari.watanabe@daiko.co.jp'},
+  {name:'田中 将',dept:'大広ＤＡ局２ＡＧ',mail:'sho.tanaka@daiko.co.jp'},
+  {name:'百瀬 太陽',dept:'大広ＤＡ局２ＡＧ',mail:'taiyo.momose@daiko.co.jp'},
+  {name:'藤村 有紗',dept:'大広ＤＡ局２ＡＧ',mail:'arisa.fujimura@daiko.co.jp'},
+  {name:'越智 稔',dept:'大広ＤＡ局２ＡＧ',mail:'minoru.ochi@daiko.co.jp'},
+  {name:'上田 薫',dept:'大広ＤＡ局ＣＤＧ',mail:'ka-ueda@daiko.co.jp'},
+  {name:'丸田 将吾',dept:'大広ＤＡ局ＣＤＧ',mail:'s-maruta@daiko.co.jp'},
+  {name:'久保田 愛梨',dept:'大広ＤＡ局ＣＤＧ',mail:'e-kubota@daiko.co.jp'},
+  {name:'井坂 篤史',dept:'大広ＤＡ局ＣＤＧ',mail:'a-isaka@daiko.co.jp'},
+  {name:'吉積 諒馬',dept:'大広ＤＡ局ＣＤＧ',mail:'r-yoshizumi@daiko.co.jp'},
+  {name:'宮本 亮',dept:'大広ＤＡ局ＣＤＧ',mail:'ry-miyamoto@daiko.co.jp'},
+  {name:'寅井 卓哉',dept:'大広ＤＡ局ＣＤＧ',mail:'t-torai@daiko.co.jp'},
+  {name:'小林 まなみ',dept:'大広ＤＡ局ＣＤＧ',mail:'man-kobayashi@daiko.co.jp'},
+  {name:'尾崎 幸喜',dept:'大広ＤＡ局ＣＤＧ',mail:'ko-ozaki@daiko.co.jp'},
+  {name:'山田 吉輝',dept:'大広ＤＡ局ＣＤＧ',mail:'yosh-yamada@daiko.co.jp'},
+  {name:'岩谷 翔太',dept:'大広ＤＡ局ＣＤＧ',mail:'s-iwatani@daiko.co.jp'},
+  {name:'島田 雄平',dept:'大広ＤＡ局ＣＤＧ',mail:'y-shimada@daiko.co.jp'},
+  {name:'島野 冬威',dept:'大広ＤＡ局ＣＤＧ',mail:'toi.shimano@daiko.co.jp'},
+  {name:'座馬 隆士',dept:'大広ＤＡ局ＣＤＧ',mail:'t-zama@daiko.co.jp'},
+  {name:'松田 徹',dept:'大広ＤＡ局ＣＤＧ',mail:'to-matsuda@daiko.co.jp'},
+  {name:'柳原 誠',dept:'大広ＤＡ局ＣＤＧ',mail:'m-yanagihara@daiko.co.jp'},
+  {name:'森田 萌絵',dept:'大広ＤＡ局ＣＤＧ',mail:'moe.morita@daiko.co.jp'},
+  {name:'椎木 優月',dept:'大広ＤＡ局ＣＤＧ',mail:'y-shiinoki@daiko.co.jp'},
+  {name:'水口 由香',dept:'大広ＤＡ局ＣＤＧ',mail:'yuka.minakuchi@daiko.co.jp'},
+  {name:'浦田 亮',dept:'大広ＤＡ局ＣＤＧ',mail:'r-urata@daiko.co.jp'},
+  {name:'簾谷 唯衣',dept:'大広ＤＡ局ＣＤＧ',mail:'y-misutani@daiko.co.jp'},
+  {name:'阿波野 駿',dept:'大広ＤＡ局ＣＤＧ',mail:'s-awano@daiko.co.jp'},
+  {name:'高橋 朋花',dept:'大広ＤＡ局ＣＤＧ',mail:'ho-takahashi@daiko.co.jp'},
+  {name:'高田 佳聖',dept:'大広ＤＡ局ＣＤＧ',mail:'y-takata@daiko.co.jp'},
 ];
 
-/* ── State ── */
-let myEmail='', myName='', selectedPerson=null, selectedTag=null;
-let currentFilter='all', feedData=[], feedLoaded=false;
-let msalToken='';
-
-/* ── MSAL 設定 ── */
-const TENANT_ID = 'hakuhodody.onmicrosoft.com';
-const msalApp = new msal.PublicClientApplication({
-  auth:{
-    clientId: '9ba1a5c7-f17a-43db-9dbf-cc75b7cb9d62', // Power Automate共通クライアントID
-    authority: 'https://login.microsoftonline.com/'+TENANT_ID,
-    redirectUri: window.location.origin+window.location.pathname,
-  },
-  cache:{ cacheLocation:'sessionStorage' }
-});
-
-async function getToken(){
-  if(msalToken) return msalToken;
-  const scopes=['https://service.flow.microsoft.com/.default'];
-  try{
-    const res = await msalApp.acquireTokenSilent({scopes, account: msalApp.getAllAccounts()[0]});
-    msalToken = res.accessToken;
-  }catch(e){
-    const res = await msalApp.acquireTokenPopup({scopes});
-    msalToken = res.accessToken;
-  }
-  return msalToken;
-}
-
-async function authFetch(url, options={}){
-  const token = await getToken();
-  return fetch(url,{
+async function sbFetch(path,options={}){
+  return fetch(SUPABASE_URL+path,{
     ...options,
-    headers:{ ...(options.headers||{}), 'Authorization':'Bearer '+token, 'Content-Type':'application/json' }
+    headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Content-Type':'application/json','Prefer':'return=minimal',...(options.headers||{})}
   });
 }
 
-/* ── Init ── */
-async function initTeams(){
-  await msalApp.handleRedirectPromise();
-  try{
-    await microsoftTeams.app.initialize();
-    const ctx = await microsoftTeams.app.getContext();
-    myEmail = ctx.user?.loginHint||'';
-    myName  = ctx.user?.displayName||'';
-    if(myName){
-      document.getElementById('my-display-name').textContent = myName+' への Praise';
-      document.getElementById('my-avatar-char').textContent = myName.charAt(0);
-    }
-  }catch(e){ console.log('Browser mode'); }
-  // ブラウザモード: ログインユーザー取得
-  if(!myEmail){
-    try{
-      const accounts = msalApp.getAllAccounts();
-      if(accounts.length>0){ myEmail=accounts[0].username; myName=accounts[0].name||''; }
-      else{
-        const res = await msalApp.loginPopup({scopes:['User.Read']});
-        myEmail=res.account.username; myName=res.account.name||'';
-      }
-      if(myName){
-        document.getElementById('my-display-name').textContent = myName+' への Praise';
-        document.getElementById('my-avatar-char').textContent = myName.charAt(0);
-      }
-    }catch(e){ console.log('Login skipped'); }
-  }
-  checkConfig();
-  initWordCloud();
-}
+let selectedPerson=null,selectedTag=null,currentFilter='all',feedData=[],feedLoaded=false;
 
-function checkConfig(){
-  const invalid = Object.values(CONFIG).some(v=>v.includes('YOUR_'));
-  document.getElementById('config-warn').style.display = invalid?'block':'none';
-}
+function init(){initWordCloud();renderPeopleList('');}
 
-/* ── Word Cloud ── */
-const WC_FALLBACK = [
-  {word:'ありがとう',w:9},{word:'助かりました',w:8},{word:'いつも',w:7},
-  {word:'丁寧',w:6},{word:'頼りになる',w:6},{word:'センス',w:5},
-  {word:'チームワーク',w:5},{word:'丁寧な対応',w:4},{word:'さすが',w:4},
-  {word:'アイデア',w:4},{word:'リーダーシップ',w:3},{word:'お疲れさまでした',w:3},
-  {word:'素晴らしい',w:3},{word:'的確',w:3},{word:'尊敬',w:2},
-  {word:'積極的',w:2},{word:'サポート',w:2},{word:'速い',w:2},
-];
+const WC_FALLBACK=[{word:'ありがとう',w:9},{word:'助かりました',w:8},{word:'いつも',w:7},{word:'丁寧',w:6},{word:'頼りになる',w:6},{word:'センス',w:5},{word:'チームワーク',w:5},{word:'さすが',w:4},{word:'アイデア',w:4},{word:'リーダーシップ',w:3},{word:'お疲れさまでした',w:3},{word:'素晴らしい',w:3},{word:'的確',w:3},{word:'尊敬',w:2},{word:'積極的',w:2},{word:'サポート',w:2}];
 
 function buildWordCloud(words){
-  const max = Math.max(...words.map(w=>w.w));
-  const colors = ['#D4622A','#2A7A6A','#534AB7','#C4922A','#993C1D','#0F6E56','#854F0B'];
-  const container = document.getElementById('wordcloud');
-  container.innerHTML = '';
+  const max=Math.max(...words.map(w=>w.w));
+  const colors=['#D4622A','#2A7A6A','#534AB7','#C4922A','#993C1D','#0F6E56','#854F0B'];
+  const c=document.getElementById('wordcloud');c.innerHTML='';
   words.sort(()=>Math.random()-0.5).forEach((item,i)=>{
-    const size = 10 + Math.round((item.w/max)*14);
-    const span = document.createElement('span');
-    span.className = 'wc-word';
-    span.textContent = item.word;
-    span.style.fontSize = size+'px';
-    span.style.color = colors[i%colors.length];
-    span.style.opacity = 0.5 + (item.w/max)*0.5;
-    span.style.animationDelay = (i*0.04)+'s';
-    container.appendChild(span);
+    const s=document.createElement('span');s.className='wc-word';s.textContent=item.word;
+    s.style.fontSize=(10+Math.round((item.w/max)*14))+'px';s.style.color=colors[i%colors.length];
+    s.style.opacity=0.5+(item.w/max)*0.5;s.style.animationDelay=(i*0.04)+'s';c.appendChild(s);
   });
 }
 
 async function initWordCloud(){
-  if(!CONFIG.FEED_URL.includes('YOUR_')){
-    try{
-      const res = await authFetch(CONFIG.FEED_URL);
-      const data = await res.json();
-      if(Array.isArray(data) && data.length > 0){
-        const freq = {};
-        const stop = new Set(['が','の','に','を','は','で','と','た','し','て','も','な','い','です','ます','ました','から','こと','ない','れ','その','この','あ','う','か','さ','ん','よ','ね','もう','まで','だ','で','も','や','へ','ら','れ','ば','れば','くれ','くれた','くれて']);
-        data.forEach(item=>{
-          if(!item.message) return;
-          item.message.replace(/[^\u3000-\u9FFFa-zA-Z]/g,' ').split(/\s+/).forEach(w=>{
-            if(w.length>=2 && !stop.has(w)) freq[w]=(freq[w]||0)+1;
-          });
-        });
-        const sorted = Object.entries(freq).sort((a,b)=>b[1]-a[1]).slice(0,18).map(([word,w])=>({word,w}));
-        if(sorted.length>0){ buildWordCloud(sorted); return; }
-      }
-    }catch(e){}
-  }
+  try{
+    const res=await sbFetch('/rest/v1/praiseboard?select=message&order=created_at.desc&limit=100',{headers:{'Prefer':''}});
+    const data=await res.json();
+    if(Array.isArray(data)&&data.length>0){
+      const freq={};const stop=new Set(['が','の','に','を','は','で','と','た','し','て','も','な','い','です','ます','ました','から','こと','ない','れ','その','この','あ','う','か','さ','ん','よ','ね','だ','や','へ','ら','ば','くれ','くれた','くれて','もう','まで']);
+      data.forEach(item=>{if(!item.message)return;item.message.replace(/[^\u3000-\u9FFFa-zA-Z]/g,' ').split(/\s+/).forEach(w=>{if(w.length>=2&&!stop.has(w))freq[w]=(freq[w]||0)+1;});});
+      const sorted=Object.entries(freq).sort((a,b)=>b[1]-a[1]).slice(0,18).map(([word,w])=>({word,w}));
+      if(sorted.length>0){buildWordCloud(sorted);return;}
+    }
+  }catch(e){}
   buildWordCloud(WC_FALLBACK);
 }
 
-/* ── Tab ── */
 function switchTab(tab,el){
-  ['send','received','feed'].forEach(t=>{
-    document.getElementById('tab-'+t).style.display = t===tab?'block':'none';
-  });
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  el.classList.add('active');
-  if(tab==='received') loadReceived();
-  if(tab==='feed'&&!feedLoaded) loadFeed();
+  ['send','received','feed'].forEach(t=>{document.getElementById('tab-'+t).style.display=t===tab?'block':'none';});
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');
+  if(tab==='feed'&&!feedLoaded)loadFeed();
 }
 
-/* ── People Picker ── */
-function onSearch(q){
-  showDropdown();
-  renderPeopleList(q);
-  if(selectedPerson){ clearPerson(); }
-}
-
-function showDropdown(){
-  document.getElementById('people-dropdown').style.display='block';
-  renderPeopleList(document.getElementById('search-input').value);
-}
-
+function onSearch(q){showDropdown();renderPeopleList(q);if(selectedPerson)clearPerson();}
+function showDropdown(){document.getElementById('people-dropdown').style.display='block';renderPeopleList(document.getElementById('search-input').value);}
 function renderPeopleList(q){
-  const filtered = q.trim()
-    ? MEMBERS.filter(m=>m.name.includes(q)||m.dept.includes(q))
-    : MEMBERS;
-  const list = document.getElementById('people-list');
-  if(filtered.length===0){
-    list.innerHTML='<div style="padding:12px;font-size:12px;color:#A09890;text-align:center;">該当なし</div>';
-    return;
-  }
-  list.innerHTML = filtered.map(m=>{
-    const st = DEPT_STYLE[m.dept]||{bg:'#F1EFE8',tc:'#5C5248',badge:'#888780'};
-    const init = m.name.replace(/\s/g,'').charAt(0);
-    return `<div class="people-item" onclick='selectPerson(${JSON.stringify(m)})'>
-      <div class="avatar-sm" style="background:${st.bg};color:${st.tc}">${init}</div>
-      <div>
-        <div class="people-item-name">${m.name}</div>
-        <div class="people-item-dept">${m.dept}</div>
-      </div>
-      <div class="dept-badge" style="background:${st.bg};color:${st.badge}">${m.dept.replace('大広ＤＡ局','').replace('ＤＡ局','DA') || 'DA局'}</div>
-    </div>`;
+  const filtered=q.trim()?MEMBERS.filter(m=>m.name.includes(q)||m.dept.includes(q)):MEMBERS;
+  const list=document.getElementById('people-list');
+  if(!filtered.length){list.innerHTML='<div style="padding:12px;font-size:12px;color:#A09890;text-align:center;">該当なし</div>';return;}
+  list.innerHTML=filtered.map(m=>{
+    const st=DEPT_STYLE[m.dept]||{bg:'#F1EFE8',tc:'#5C5248',badge:'#888780'};
+    const init=m.name.replace(/\s/g,'').charAt(0);
+    const ms=JSON.stringify(m).replace(/"/g,'&quot;');
+    return`<div class="people-item" onclick='selectPerson(${ms})'><div class="avatar-sm" style="background:${st.bg};color:${st.tc}">${init}</div><div><div class="people-item-name">${m.name}</div><div class="people-item-dept">${m.dept}</div></div><div class="dept-badge" style="background:${st.bg};color:${st.badge}">${m.dept.replace('大広ＤＡ局','')||'DA局'}</div></div>`;
   }).join('');
 }
-
 function selectPerson(m){
-  selectedPerson = m;
-  const st = DEPT_STYLE[m.dept]||{bg:'#F1EFE8',tc:'#5C5248'};
-  const init = m.name.replace(/\s/g,'').charAt(0);
-  const inp = document.getElementById('search-input');
-  inp.value = '';
-  inp.placeholder = m.name;
-  inp.style.opacity = '0';
-  const badge = document.getElementById('picker-selected-badge');
-  badge.style.display='flex';
-  document.getElementById('badge-avatar').style.background=st.bg;
-  document.getElementById('badge-avatar').style.color=st.tc;
-  document.getElementById('badge-avatar').textContent=init;
-  document.getElementById('badge-name').textContent=m.name;
-  document.getElementById('badge-dept').textContent=m.dept;
-  const clr = document.getElementById('picker-clear');
-  clr.style.display='flex';
-  document.getElementById('people-dropdown').style.display='none';
-  validateSend();
+  selectedPerson=m;const st=DEPT_STYLE[m.dept]||{bg:'#F1EFE8',tc:'#5C5248'};const init=m.name.replace(/\s/g,'').charAt(0);
+  document.getElementById('search-input').value='';document.getElementById('search-input').placeholder=m.name;document.getElementById('search-input').style.opacity='0';
+  const badge=document.getElementById('picker-selected-badge');badge.style.display='flex';
+  document.getElementById('badge-avatar').style.background=st.bg;document.getElementById('badge-avatar').style.color=st.tc;document.getElementById('badge-avatar').textContent=init;
+  document.getElementById('badge-name').textContent=m.name;document.getElementById('badge-dept').textContent=m.dept;
+  document.getElementById('picker-clear').style.display='flex';document.getElementById('people-dropdown').style.display='none';validateSend();
 }
-
 function clearPerson(){
-  selectedPerson=null;
-  document.getElementById('search-input').value='';
-  document.getElementById('search-input').placeholder='名前・部署で検索…';
-  document.getElementById('search-input').style.opacity='1';
-  document.getElementById('picker-selected-badge').style.display='none';
-  document.getElementById('picker-clear').style.display='none';
-  validateSend();
+  selectedPerson=null;document.getElementById('search-input').value='';document.getElementById('search-input').placeholder='名前・部署で検索…';document.getElementById('search-input').style.opacity='1';
+  document.getElementById('picker-selected-badge').style.display='none';document.getElementById('picker-clear').style.display='none';validateSend();
 }
+function toggleTag(el,tag){document.querySelectorAll('.tag-chip').forEach(c=>c.classList.remove('selected'));selectedTag=(selectedTag===tag)?null:tag;if(selectedTag)el.classList.add('selected');}
+function updateCount(){const v=document.getElementById('msg-area').value.length;document.getElementById('char-count').textContent=v+' / 200';validateSend();}
+function validateSend(){document.getElementById('send-btn').disabled=!(!!selectedPerson&&document.getElementById('msg-area').value.trim().length>5);}
 
-/* ── Tag ── */
-function toggleTag(el,tag){
-  document.querySelectorAll('.tag-chip').forEach(c=>c.classList.remove('selected'));
-  selectedTag=(selectedTag===tag)?null:tag;
-  if(selectedTag) el.classList.add('selected');
-}
-
-/* ── Validation ── */
-function updateCount(){
-  const v=document.getElementById('msg-area').value.length;
-  document.getElementById('char-count').textContent=v+' / 200';
-  validateSend();
-}
-function validateSend(){
-  const ok=!!selectedPerson&&document.getElementById('msg-area').value.trim().length>5;
-  document.getElementById('send-btn').disabled=!ok;
-}
-
-/* ── Send ── */
 async function sendCompliment(){
-  const btn=document.getElementById('send-btn');
-  btn.disabled=true; btn.textContent='送信中…';
+  const btn=document.getElementById('send-btn');btn.disabled=true;btn.textContent='送信中…';
   ['send-success','send-error'].forEach(id=>document.getElementById(id).style.display='none');
   try{
-    const res=await authFetch(CONFIG.SEND_URL,{
-      method:'POST',
-      body:JSON.stringify({
-        to:      selectedPerson.mail,
-        toName:  selectedPerson.name,
-        message: document.getElementById('msg-area').value.trim(),
-        category:selectedTag||'その他',
-        isPublic:true   // 全員強制公開
-        // 送信者情報は意図的に送らない
-      })
-    });
-    if(res.ok){
+    const res=await sbFetch('/rest/v1/praiseboard',{method:'POST',body:JSON.stringify({recipient_email:selectedPerson.mail,recipient_name:selectedPerson.name,message:document.getElementById('msg-area').value.trim(),category:selectedTag||'その他'})});
+    if(res.ok||res.status===201){
       document.getElementById('send-success').style.display='block';
-      document.getElementById('msg-area').value='';
-      document.getElementById('char-count').textContent='0 / 200';
-      clearPerson(); selectedTag=null;
-      document.querySelectorAll('.tag-chip').forEach(c=>c.classList.remove('selected'));
-      feedLoaded=false;
-      setTimeout(()=>{document.getElementById('send-success').style.display='none';},5000);
-    }else throw new Error('HTTP '+res.status);
-  }catch(e){
-    document.getElementById('send-error').style.display='block';
-    console.error(e);
-  }
-  btn.innerHTML='<svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M1 7l11-5-5 11-2-4-4-2z" stroke="white" stroke-width="1.5" stroke-linejoin="round"/></svg> 匿名で送る';
-  validateSend();
+      document.getElementById('msg-area').value='';document.getElementById('char-count').textContent='0 / 200';
+      clearPerson();selectedTag=null;document.querySelectorAll('.tag-chip').forEach(c=>c.classList.remove('selected'));
+      feedLoaded=false;setTimeout(()=>{document.getElementById('send-success').style.display='none';},5000);
+    }else throw new Error('status '+res.status);
+  }catch(e){document.getElementById('send-error').style.display='block';console.error(e);}
+  btn.innerHTML='<svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M1 7l11-5-5 11-2-4-4-2z" stroke="white" stroke-width="1.5" stroke-linejoin="round"/></svg> 匿名で送る';validateSend();
 }
 
-/* ── Received ── */
+function submitEmail(){
+  const email=document.getElementById('email-input').value.trim();
+  if(!email)return;
+  document.getElementById('email-form-wrap').style.display='none';
+  loadReceived(email);
+}
+
 const TAG_CLASS={チームワーク:'tag-team',アイデア:'tag-idea',サポート:'tag-support','仕事の質':'tag-work',リーダーシップ:'tag-lead'};
 
-async function loadReceived(){
+async function loadReceived(email){
   document.getElementById('received-loading').style.display='block';
   document.getElementById('received-list').innerHTML='';
+  const name=email.split('@')[0];
+  document.getElementById('my-display-name').textContent=name+' への Praise';
+  document.getElementById('my-avatar-char').textContent=name.charAt(0).toUpperCase();
   try{
-    const res=await authFetch(CONFIG.READ_URL,{method:'POST',body:JSON.stringify({userEmail:myEmail})});
+    const res=await sbFetch('/rest/v1/praiseboard?recipient_email=eq.'+encodeURIComponent(email)+'&order=created_at.desc&select=message,category,created_at',{headers:{'Prefer':''}});
     const data=await res.json();
-    renderReceived(Array.isArray(data)?data:[]);
-  }catch(e){
-    document.getElementById('received-list').innerHTML='<div class="empty-state">データの取得に失敗しました。</div>';
-  }
+    const items=Array.isArray(data)?data:[];
+    document.getElementById('received-count').textContent=items.length+'件';
+    if(!items.length){document.getElementById('received-list').innerHTML='<div class="empty-state">まだ褒めが届いていません。<br>あなたの活躍を誰かが見ています！</div>';}
+    else{document.getElementById('received-list').innerHTML=items.map(item=>`<div class="compliment-card"><span class="card-tag ${TAG_CLASS[item.category]||'tag-work'}">${item.category||'その他'}</span><div class="card-msg">${esc(item.message)}</div><div class="card-date">${fmtDate(item.created_at)}<span class="anon-badge">匿名</span></div></div>`).join('');}
+  }catch(e){document.getElementById('received-list').innerHTML='<div class="empty-state">データの取得に失敗しました。</div>';}
   document.getElementById('received-loading').style.display='none';
 }
 
-function renderReceived(items){
-  document.getElementById('received-count').textContent=items.length+'件';
-  if(!items.length){
-    document.getElementById('received-list').innerHTML='<div class="empty-state">まだ褒めが届いていません。<br>あなたの活躍を誰かが見ています！</div>';
-    return;
-  }
-  document.getElementById('received-list').innerHTML=items.map(item=>`
-    <div class="compliment-card">
-      <span class="card-tag ${TAG_CLASS[item.category]||'tag-work'}">${item.category||'その他'}</span>
-      <div class="card-msg">${esc(item.message)}</div>
-      <div class="card-date">${fmtDate(item.date)}<span class="anon-badge">匿名</span></div>
-    </div>`).join('');
-}
-
-/* ── Feed ── */
 async function loadFeed(){
   document.getElementById('feed-loading').style.display='block';
   try{
-    const res=await authFetch(CONFIG.FEED_URL);
-    feedData=await res.json();
-    if(!Array.isArray(feedData)) feedData=[];
-    feedLoaded=true;
-  }catch(e){ feedData=[]; }
-  document.getElementById('feed-loading').style.display='none';
-  renderFeed();
+    const res=await sbFetch('/rest/v1/praiseboard?order=created_at.desc&limit=100&select=recipient_name,message,category,created_at',{headers:{'Prefer':''}});
+    feedData=await res.json();if(!Array.isArray(feedData))feedData=[];feedLoaded=true;
+  }catch(e){feedData=[];}
+  document.getElementById('feed-loading').style.display='none';renderFeed();
 }
-
 function renderFeed(){
-  const DEPT_COLORS=[
-    {bg:'#F5E8E0',tc:'#D4622A'},{bg:'#E0F0EC',tc:'#2A7A6A'},
-    {bg:'#F5EDD8',tc:'#C4922A'},{bg:'#EAEBF7',tc:'#534AB7'},{bg:'#FBEAF0',tc:'#993556'},
-  ];
+  const DEPT_COLORS=[{bg:'#F5E8E0',tc:'#D4622A'},{bg:'#E0F0EC',tc:'#2A7A6A'},{bg:'#F5EDD8',tc:'#C4922A'},{bg:'#EAEBF7',tc:'#534AB7'},{bg:'#FBEAF0',tc:'#993556'}];
   const filtered=currentFilter==='all'?feedData:feedData.filter(d=>d.category===currentFilter);
-  if(!filtered.length){
-    document.getElementById('feed-list').innerHTML='<div class="empty-state">まだ投稿がありません。<br>最初の褒めを送ってみましょう！</div>';
-    return;
-  }
-  document.getElementById('feed-list').innerHTML=filtered.map((d,i)=>{
-    const c=DEPT_COLORS[i%5];
-    return`<div class="feed-card">
-      <div class="feed-to">
-        <div class="feed-avatar" style="background:${c.bg};color:${c.tc}">${(d.toName||'?').charAt(0)}</div>
-        <span class="feed-name">${esc(d.toName||'')}</span>
-        <span class="card-tag ${TAG_CLASS[d.category]||'tag-work'}" style="margin-left:auto;margin-bottom:0">${d.category||'その他'}</span>
-      </div>
-      <div class="feed-msg">${esc(d.message)}</div>
-      <div class="feed-footer"><span class="feed-anon">匿名より</span><span class="feed-time">${fmtDate(d.date)}</span></div>
-    </div>`;
-  }).join('');
+  if(!filtered.length){document.getElementById('feed-list').innerHTML='<div class="empty-state">まだ投稿がありません。<br>最初の褒めを送ってみましょう！</div>';return;}
+  document.getElementById('feed-list').innerHTML=filtered.map((d,i)=>{const c=DEPT_COLORS[i%5];return`<div class="feed-card"><div class="feed-to"><div class="feed-avatar" style="background:${c.bg};color:${c.tc}">${(d.recipient_name||'?').charAt(0)}</div><span class="feed-name">${esc(d.recipient_name||'')}</span><span class="card-tag ${TAG_CLASS[d.category]||'tag-work'}" style="margin-left:auto;margin-bottom:0">${d.category||'その他'}</span></div><div class="feed-msg">${esc(d.message)}</div><div class="feed-footer"><span class="feed-anon">匿名より</span><span class="feed-time">${fmtDate(d.created_at)}</span></div></div>`;}).join('');
 }
-
-function setFilter(btn,val){
-  currentFilter=val;
-  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  renderFeed();
-}
-
-/* ── Helpers ── */
+function setFilter(btn,val){currentFilter=val;document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderFeed();}
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
-function fmtDate(iso){
-  if(!iso)return'';
-  try{return new Date(iso).toLocaleDateString('ja-JP',{month:'long',day:'numeric'});}
-  catch{return iso;}
-}
-
-/* ── Close dropdown outside ── */
-document.addEventListener('click',e=>{
-  if(!document.getElementById('picker-wrap')?.contains(e.target)){
-    document.getElementById('people-dropdown').style.display='none';
-  }
-});
-
-initTeams();
+function fmtDate(iso){if(!iso)return'';try{return new Date(iso).toLocaleDateString('ja-JP',{month:'long',day:'numeric'});}catch{return iso;}}
+document.addEventListener('click',e=>{if(!document.getElementById('picker-wrap')?.contains(e.target))document.getElementById('people-dropdown').style.display='none';});
+init();
 </script>
 </body>
 </html>
