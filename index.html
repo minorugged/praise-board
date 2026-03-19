@@ -251,8 +251,14 @@ async function initWordCloud(){
     const res=await sbFetch('/rest/v1/praiseboard?select=message&order=created_at.desc&limit=100');
     const data=await res.json();
     if(Array.isArray(data)&&data.length>0){
-      const freq={};const stop=new Set(['が','の','に','を','は','で','と','た','し','て','も','な','い','です','ます','ました','から','こと','ない','れ','その','この','あ','う','か','さ','ん','よ','ね','だ','や','へ','ら','ば','くれ','くれた','くれて','もう','まで']);
-      data.forEach(item=>{if(!item.message)return;item.message.replace(/[^\u3000-\u9FFFa-zA-Z]/g,' ').split(/\s+/).forEach(w=>{if(w.length>=2&&!stop.has(w))freq[w]=(freq[w]||0)+1;});});
+      const freq={};
+      const stop=new Set(['が','の','に','を','は','で','と','た','し','て','も','な','い','です','ます','ました','から','こと','ない','れ','その','この','あ','う','か','さ','ん','よ','ね','だ','や','へ','ら','ば','くれ','くれた','くれて','もう','まで','ので','など','という','思い','思う','いる','ある','なる']);
+      data.forEach(item=>{
+        if(!item.message)return;
+        // 日本語（ひらがな・カタカナ・漢字）の単語のみ抽出
+        const jaWords=item.message.match(/[\u3040-\u9FFF\u30A0-\u30FF]{2,}/g)||[];
+        jaWords.forEach(w=>{if(!stop.has(w))freq[w]=(freq[w]||0)+1;});
+      });
       const sorted=Object.entries(freq).sort((a,b)=>b[1]-a[1]).slice(0,18).map(([word,w])=>({word,w}));
       if(sorted.length>0){buildWordCloud(sorted);return;}
     }
@@ -292,7 +298,7 @@ function clearPerson(){
 }
 function toggleTag(el,tag){document.querySelectorAll('.tag-chip').forEach(c=>c.classList.remove('selected'));selectedTag=(selectedTag===tag)?null:tag;if(selectedTag)el.classList.add('selected');}
 function updateCount(){const v=document.getElementById('msg-area').value.length;document.getElementById('char-count').textContent=v+' / 200';validateSend();}
-function validateSend(){document.getElementById('send-btn').disabled=!(!!selectedPerson&&document.getElementById('msg-area').value.trim().length>5);}
+function validateSend(){document.getElementById('send-btn').disabled=!(!!selectedPerson&&document.getElementById('msg-area').value.trim().length>0);}
 
 async function sendCompliment(){
   const btn=document.getElementById('send-btn');btn.disabled=true;btn.textContent='送信中…';
