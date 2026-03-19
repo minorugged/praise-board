@@ -222,17 +222,16 @@ const MEMBERS=[
 ];
 
 async function sbFetch(path,options={}){
-  return fetch(SUPABASE_URL+path,{
-    ...options,
-    headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Content-Type':'application/json','Prefer':'return=minimal',...(options.headers||{})}
-  });
+  const h={'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Content-Type':'application/json',...(options.headers||{})};
+  if(options.method==='POST') h['Prefer']='return=representation';
+  return fetch(SUPABASE_URL+path,{...options,headers:h});
 }
 
 let selectedPerson=null,selectedTag=null,currentFilter='all',feedData=[],feedLoaded=false;
 
 function init(){initWordCloud();renderPeopleList('');}
 
-const WC_FALLBACK=[{word:'ありがとう',w:9},{word:'助かりました',w:8},{word:'いつも',w:7},{word:'丁寧',w:6},{word:'頼りになる',w:6},{word:'センス',w:5},{word:'チームワーク',w:5},{word:'さすが',w:4},{word:'アイデア',w:4},{word:'リーダーシップ',w:3},{word:'お疲れさまでした',w:3},{word:'素晴らしい',w:3},{word:'的確',w:3},{word:'尊敬',w:2},{word:'積極的',w:2},{word:'サポート',w:2}];
+const WC_FALLBACK=[];
 
 function buildWordCloud(words){
   const max=Math.max(...words.map(w=>w.w));
@@ -246,8 +245,10 @@ function buildWordCloud(words){
 }
 
 async function initWordCloud(){
+  const container=document.getElementById('wordcloud');
+  container.innerHTML='<span style="font-size:12px;color:#A09890;">まだ投稿がありません。最初の褒めを送ってみましょう！</span>';
   try{
-    const res=await sbFetch('/rest/v1/praiseboard?select=message&order=created_at.desc&limit=100',{headers:{'Prefer':''}});
+    const res=await sbFetch('/rest/v1/praiseboard?select=message&order=created_at.desc&limit=100');
     const data=await res.json();
     if(Array.isArray(data)&&data.length>0){
       const freq={};const stop=new Set(['が','の','に','を','は','で','と','た','し','て','も','な','い','です','ます','ました','から','こと','ない','れ','その','この','あ','う','か','さ','ん','よ','ね','だ','や','へ','ら','ば','くれ','くれた','くれて','もう','まで']);
@@ -255,8 +256,7 @@ async function initWordCloud(){
       const sorted=Object.entries(freq).sort((a,b)=>b[1]-a[1]).slice(0,18).map(([word,w])=>({word,w}));
       if(sorted.length>0){buildWordCloud(sorted);return;}
     }
-  }catch(e){}
-  buildWordCloud(WC_FALLBACK);
+  }catch(e){console.error(e);}
 }
 
 function switchTab(tab,el){
