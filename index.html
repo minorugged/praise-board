@@ -1,4 +1,4 @@
-<!DOCTYPE html><!-- v3 -->
+<!DOCTYPE html>
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
@@ -223,7 +223,7 @@ const MEMBERS=[
 
 async function sbFetch(path,options={}){
   const h={'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Content-Type':'application/json',...(options.headers||{})};
-  if(options.method==='POST') h['Prefer']='return=representation';
+  if(options.method==='POST') h['Prefer']='return=minimal';
   return fetch(SUPABASE_URL+path,{...options,headers:h});
 }
 
@@ -305,7 +305,7 @@ async function sendCompliment(){
   ['send-success','send-error'].forEach(id=>document.getElementById(id).style.display='none');
   try{
     const res=await sbFetch('/rest/v1/praiseboard',{method:'POST',body:JSON.stringify({recipient_email:selectedPerson.mail,recipient_name:selectedPerson.name,message:document.getElementById('msg-area').value.trim(),category:selectedTag||'その他'})});
-    if(res.ok||res.status===201){
+    if(res.ok||res.status===201||res.status===204){
       document.getElementById('send-success').style.display='block';
       document.getElementById('msg-area').value='';document.getElementById('char-count').textContent='0 / 200';
       clearPerson();selectedTag=null;document.querySelectorAll('.tag-chip').forEach(c=>c.classList.remove('selected'));
