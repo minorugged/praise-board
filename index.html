@@ -12,7 +12,7 @@
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Noto Sans JP',sans-serif;background:#FBF8F3;color:#1C1612;min-height:100vh;}
 .app{max-width:480px;margin:0 auto;display:flex;flex-direction:column;min-height:100vh;}
-.header{padding:18px 20px 0;display:flex;flex-direction:column;gap:2px;}
+.header{padding:0;display:flex;flex-direction:column;gap:2px;}
 .header-title{font-family:'DM Serif Display',serif;font-size:18px;color:#1C1612;letter-spacing:-0.3px;line-height:1.4;}
 .header-sub{font-size:10px;color:#A09890;letter-spacing:0.8px;}
 .tabs{display:flex;padding:14px 20px 0;gap:4px;border-bottom:1px solid rgba(28,22,18,0.1);}
@@ -95,7 +95,7 @@ body{font-family:'Noto Sans JP',sans-serif;background:#FBF8F3;color:#1C1612;min-
   </div>
   <div class="tabs">
     <button class="tab active" onclick="switchTab('send',this)">✦ 褒める</button>
-    <button class="tab" onclick="switchTab('received',this)">もらった</button>
+    <button class="tab" onclick="switchTab('received',this)">もらった声</button>
     <button class="tab" onclick="switchTab('feed',this)">みんなの声</button>
   </div>
 
