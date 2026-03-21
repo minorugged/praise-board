@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<meta name="googlebot" content="noindex, nofollow">
 <title>匿名で褒め合おう〜1年間お疲れ様でした〜</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
@@ -87,7 +89,12 @@ body{font-family:'Noto Sans JP',sans-serif;background:#FBF8F3;color:#1C1612;min-
 <body>
 <div class="app">
   <div class="header">
-    <div class="header-title">〜1年間お疲れ様でした〜<br>匿名で褒め合おう！</div>
+    <div class="header-title">
+      <!-- ★ ヘッダー画像を差し替える場合は下の img タグの src を変更してください -->
+      <!-- 画像を使う場合: <img src="header.png" alt="匿名で褒め合おう" style="max-width:100%;height:auto;"> -->
+      <!-- 現在はテキスト表示 -->
+      〜1年間お疲れ様でした〜<br>匿名で褒め合おう！
+    </div>
     <div class="header-sub">ANONYMOUS · DAIKO DA BUREAU</div>
   </div>
   <div class="tabs">
@@ -255,8 +262,8 @@ async function initWordCloud(){
       data.forEach(item=>{
         if(!item.message)return;
         // 日本語（ひらがな・カタカナ・漢字）の単語のみ抽出
-        const jaWords=item.message.match(/[\u3040-\u9FFF\u30A0-\u30FF]{2,}/g)||[];
-        jaWords.forEach(w=>{if(!stop.has(w))freq[w]=(freq[w]||0)+1;});
+        const words=item.message.replace(/[^\u3040-\u9FFFa-zA-Z0-9]/g,' ').split(/\s+/);
+        words.forEach(w=>{if(w.length>=2&&!stop.has(w))freq[w]=(freq[w]||0)+1;});
       });
       const sorted=Object.entries(freq).sort((a,b)=>b[1]-a[1]).slice(0,18).map(([word,w])=>({word,w}));
       if(sorted.length>0){buildWordCloud(sorted);return;}
