@@ -21,8 +21,8 @@ body{font-family:'Noto Sans JP',sans-serif;background:#FBF8F3;color:#1C1612;min-
 .tab:not(.active):hover{color:#5C5248;background:rgba(0,0,0,0.03);}
 .content{flex:1;background:#fff;border:1px solid rgba(28,22,18,0.1);border-top:none;padding:18px 20px;}
 .section-label{font-size:10px;font-weight:700;color:#A09890;letter-spacing:1px;text-transform:uppercase;margin-bottom:7px;}
-.wordcloud-wrap{background:#FBF8F3;border-radius:12px;padding:14px 16px;margin-bottom:16px;min-height:90px;}
-.wordcloud-canvas{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;justify-content:center;min-height:60px;}
+.wordcloud-wrap{background:#FBF8F3;border-radius:12px;padding:14px 16px;margin-bottom:16px;height:100px;overflow:hidden;}
+.wordcloud-canvas{display:flex;flex-wrap:wrap;gap:4px 8px;align-items:center;justify-content:center;height:100%;}
 .wc-word{display:inline-block;cursor:default;transition:transform 0.2s;font-family:'Noto Sans JP',sans-serif;font-weight:500;animation:wcFade 0.4s ease both;}
 .wc-word:hover{transform:scale(1.12);}
 @keyframes wcFade{from{opacity:0;transform:scale(0.85);}to{opacity:1;transform:scale(1);}}
@@ -123,6 +123,7 @@ body{font-family:'Noto Sans JP',sans-serif;background:#FBF8F3;color:#1C1612;min-
       <div class="tag-chip" onclick="toggleTag(this,'サポート')">サポート</div>
       <div class="tag-chip" onclick="toggleTag(this,'仕事の質')">仕事の質</div>
       <div class="tag-chip" onclick="toggleTag(this,'リーダーシップ')">リーダーシップ</div>
+      <div class="tag-chip" onclick="toggleTag(this,'その他')">その他</div>
     </div>
     <div class="section-label">メッセージ</div>
     <div class="msg-wrap">
@@ -198,6 +199,7 @@ const MEMBERS=[
   {name:'百瀬 太陽',dept:'大広ＤＡ局２ＡＧ',mail:'taiyo.momose@daiko.co.jp'},
   {name:'藤村 有紗',dept:'大広ＤＡ局２ＡＧ',mail:'arisa.fujimura@daiko.co.jp'},
   {name:'越智 稔',dept:'大広ＤＡ局２ＡＧ',mail:'minoru.ochi@daiko.co.jp'},
+  {name:'横尾 修弘',dept:'大広ＤＡ局２ＡＧ',mail:'nobuhiro.yokoo@daiko.co.jp'},
   {name:'上田 薫',dept:'大広ＤＡ局ＣＤＧ',mail:'ka-ueda@daiko.co.jp'},
   {name:'丸田 将吾',dept:'大広ＤＡ局ＣＤＧ',mail:'s-maruta@daiko.co.jp'},
   {name:'久保田 愛梨',dept:'大広ＤＡ局ＣＤＧ',mail:'e-kubota@daiko.co.jp'},
@@ -238,12 +240,32 @@ const WC_FALLBACK=[];
 function buildWordCloud(words){
   const max=Math.max(...words.map(w=>w.w));
   const colors=['#D4622A','#2A7A6A','#534AB7','#C4922A','#993C1D','#0F6E56','#854F0B'];
-  const c=document.getElementById('wordcloud');c.innerHTML='';
-  words.sort(()=>Math.random()-0.5).forEach((item,i)=>{
-    const s=document.createElement('span');s.className='wc-word';s.textContent=item.word;
-    s.style.fontSize=(10+Math.round((item.w/max)*14))+'px';s.style.color=colors[i%colors.length];
-    s.style.opacity=0.5+(item.w/max)*0.5;s.style.animationDelay=(i*0.04)+'s';c.appendChild(s);
-  });
+  const container=document.getElementById('wordcloud');
+  container.innerHTML='';
+
+  // 最大12語に絞って表示（頻度上位）
+  const limited=words.slice(0,12);
+
+  // まず通常サイズで試して、はみ出すなら縮小
+  let scale=1.0;
+  for(let attempt=0;attempt<5;attempt++){
+    container.innerHTML='';
+    limited.forEach((item,i)=>{
+      const size=Math.round((8+Math.round((item.w/max)*10))*scale);
+      const s=document.createElement('span');
+      s.className='wc-word';
+      s.textContent=item.word;
+      s.style.fontSize=size+'px';
+      s.style.color=colors[i%colors.length];
+      s.style.opacity=0.55+(item.w/max)*0.45;
+      s.style.animationDelay=(i*0.04)+'s';
+      container.appendChild(s);
+    });
+    // コンテナの実際の高さと比較
+    if(container.scrollHeight<=container.clientHeight+4) break;
+    scale-=0.12;
+    if(scale<0.4) break;
+  }
 }
 
 async function initWordCloud(){
