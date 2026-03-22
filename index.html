@@ -242,26 +242,22 @@ function buildWordCloud(words){
   const colors=['#D4622A','#2A7A6A','#534AB7','#C4922A','#993C1D','#0F6E56','#854F0B'];
   const container=document.getElementById('wordcloud');
   container.innerHTML='';
-
-  // 最大12語に絞って表示（頻度上位）
   const limited=words.slice(0,12);
-
-  // まず通常サイズで試して、はみ出すなら縮小
   let scale=1.0;
   for(let attempt=0;attempt<5;attempt++){
     container.innerHTML='';
     limited.forEach((item,i)=>{
-      const size=Math.round((8+Math.round((item.w/max)*10))*scale);
+      const ratio=item.w/max;
+      const size=Math.round((8+Math.round(ratio*20))*scale);
       const s=document.createElement('span');
       s.className='wc-word';
       s.textContent=item.word;
       s.style.fontSize=size+'px';
       s.style.color=colors[i%colors.length];
-      s.style.opacity=0.55+(item.w/max)*0.45;
+      s.style.opacity=0.55+ratio*0.45;
       s.style.animationDelay=(i*0.04)+'s';
       container.appendChild(s);
     });
-    // コンテナの実際の高さと比較
     if(container.scrollHeight<=container.clientHeight+4) break;
     scale-=0.12;
     if(scale<0.4) break;
